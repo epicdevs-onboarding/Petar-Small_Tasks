@@ -1,4 +1,5 @@
 ﻿using System.CodeDom.Compiler;
+using System.Runtime.CompilerServices;
 
 namespace Task1_ArrayMultiplication
 {
@@ -8,7 +9,7 @@ namespace Task1_ArrayMultiplication
         {
             
             int maxValue, arrLength;
-            string input1, input2;
+            string input1, input2, input3;
             do
             {
                 Console.WriteLine("Enter length of the arrays (max. 20): ");
@@ -30,13 +31,24 @@ namespace Task1_ArrayMultiplication
                 }
             } while (!int.TryParse(input2, out maxValue));
 
-            int[] intArray = GenerateRandomIntArray(arrLength, maxValue);
-            double[] doubleArray = GenerateRandomDoubleArr(arrLength, maxValue);
+            int roundingOption;
+            do
+            {
+                Console.WriteLine("Choose a desired rounding option for the results: \n (1) ceiling() \n (2) floor() \n (3) Math.Round() ");
+                input3 = Console.ReadLine();
+                if (!int.TryParse(input3, out roundingOption) || !(roundingOption >= 1 && roundingOption <= 3))
+                {
+                    Console.WriteLine("Please enter a valid number between 1 and 3!");
+                }
+            } while (!int.TryParse(input3, out roundingOption) || !(roundingOption >=1 && roundingOption <= 3));
             
-            PrintReadableExpression(intArray, doubleArray);
+            int[] intArray = GenerateRandomIntArr(arrLength, maxValue);
+            decimal[] decimalArray = GenerateRandomDecimalArr(arrLength, maxValue);
+            
+            PrintReadableExpression(intArray, decimalArray, roundingOption);
         }
 
-        static int[] GenerateRandomIntArray(int elemCount, int maxValue)
+        static int[] GenerateRandomIntArr(int elemCount, int maxValue)
         {
             int[] intArray = new int[elemCount];
             Random r = new Random();
@@ -46,21 +58,39 @@ namespace Task1_ArrayMultiplication
             }
             return intArray;
         }
-        static double[] GenerateRandomDoubleArr(int elemCount, int maxValue)
+        static decimal[] GenerateRandomDecimalArr(int elemCount, int maxValue)
         {
-            double[] doubleArray = new double[elemCount];
+            decimal[] decimalArray = new decimal[elemCount];
             Random r = new Random();
             for (int i = 0; i < elemCount; i++)
             {
-                doubleArray[i] = Math.Round(r.NextDouble() * maxValue, 3);
+                decimalArray[i] = Math.Round(Convert.ToDecimal(r.NextDouble()) * maxValue, 3);
             }
-            return doubleArray;
+            return decimalArray;
         }
-        static void PrintReadableExpression(int[] intArr, double[] doubleArr)
+
+        static decimal RoundFloor(decimal d)
+        {
+            string dString = d.ToString();
+            string rounded = dString.TrimEnd(dString[dString.Length - 1]);
+            return Convert.ToDecimal(rounded);
+        }
+
+        static decimal RoundCeiling(decimal d)
+        {
+            return RoundFloor(d) + 0.01m;
+        }
+        static void PrintReadableExpression(int[] intArr, decimal[] decimalArr, int roundingOption)
         {
             for (int i = 0; i < intArr.Length; i++)
-            {
-                Console.WriteLine($"{Convert.ToString(intArr[i])} x {Convert.ToString(doubleArr[i])} = {Math.Round(doubleArr[i] * intArr[i], 2)}");
+            {   
+                if (roundingOption == 1)
+                    Console.WriteLine($"{intArr[i]} x {decimalArr[i]} = {RoundCeiling(decimalArr[i] * intArr[i])}");
+                else if (roundingOption == 2)
+                    Console.WriteLine($"{intArr[i]} x {decimalArr[i]} = {RoundFloor(decimalArr[i] * intArr[i])}");
+                else
+                    Console.WriteLine($"{intArr[i]} x {decimalArr[i]} = {Math.Round(decimalArr[i] * intArr[i], 2)}");
+
             }
         }
     }
