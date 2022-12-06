@@ -1,4 +1,6 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Diagnostics.Tracing;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ConsoleAppAssignment
 {
@@ -8,107 +10,78 @@ namespace ConsoleAppAssignment
         {
             string inputNumString;
             string answerQ1, answerQ2;
-
             
             do {
                 Console.WriteLine("Please enter number of words to enter: ");
                 inputNumString = Console.ReadLine();
+                if (!IsValidInputNumber(inputNumString))
+                {
+                    Console.WriteLine("This isn't a valid number!");
+                }
 
-            } while (!Regex.IsMatch(inputNumString, @"^\d+$"));
+            } while (!IsValidInputNumber(inputNumString));
 
             int wordCount = Convert.ToInt32(inputNumString);
 
-            string[] wordsStringArr = new string[wordCount];
-
-            for (int i = 0; i < wordsStringArr.Length; i++)
-            {
-                Console.WriteLine("Word #"+ ++i +": ");
-                i--;
-                wordsStringArr[i] = Console.ReadLine();
-                if (string.IsNullOrWhiteSpace(wordsStringArr[i])) 
-                {
-                    Console.WriteLine("The words can't be white spaces or null! Enter a valid word: ");
-                    i--;
-                }
-               
-            }
+            List<string> sentence = new List<string>();
+            int i = 1;
 
             do
             {
-                Console.WriteLine("Do you want to reverse the characters in the words (y/n)? ");
-                answerQ1 = Console.ReadLine();
-                if (answerQ1 == "y")
+                Console.WriteLine($"Word #{i}: ");
+                string temp = Console.ReadLine();
+                
+                if (string.IsNullOrWhiteSpace(temp))
                 {
-                    wordsStringArr = ReverseCharsOfStringArr(wordsStringArr);
-                    break;
-                }
-                else if (answerQ1 == "n")
-                {
-                    break;
+                    Console.WriteLine("The words can't be white spaces or null! Enter a valid word: ");
+                    continue;
                 }
                 else
                 {
-                    Console.WriteLine("Invalid answer!");
+                    sentence.Add(temp);
+                    i++;
+                    wordCount--;
                 }
-            } while (!IsValidYNAnswer(answerQ1));
+            } while (wordCount > 0);
 
-            do {
-                Console.WriteLine("Do you want to reverse the order in the sentence (y/n)? ");
-                answerQ2 = Console.ReadLine();
-                if (answerQ2 == "y")
-                {
-                    wordsStringArr = ReverseStringArrOrder(wordsStringArr);
-                    break;
-                }
-                else if (answerQ2 == "n")
-                {
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("Invalid answer!");
-                }
-            } while (!IsValidYNAnswer(answerQ2));
+            Console.WriteLine("Do you want to reverse the characters in the words (y/n)? ");
+            answerQ1 = Console.ReadLine();
+            sentence = ValidateAndReturnAnswers(answerQ1, sentence, 1);
 
+            Console.WriteLine("Do you want to reverse the order in the sentence (y/n)? ");
+            answerQ2 = Console.ReadLine();
+            sentence = ValidateAndReturnAnswers(answerQ2, sentence, 2);
 
-            PrintArr(wordsStringArr);
+            PrintArr(sentence);
         }
 
-        static string[] ReverseCharsOfStringArr(string[] arr)
+        static List<string> ReverseCharsOfStringArr(List<string> list)
         {
-            string[] result = new string[arr.Length];
-            int i = 0;
-            foreach (string word in arr)
+            List<string> result = new List<string>();
+            
+            foreach (string word in list)
             {
-                string reverseString = "";
-                int length;
+                char[] charArr = word.ToCharArray();
+                Array.Reverse(charArr);
+                result.Add(new string(charArr));
 
-                length = word.Length - 1;
-
-                while (length >= 0)
-                {
-                    reverseString = reverseString + word[length];
-                    length--;
-                }
-
-                result[i] = reverseString;
-                i++;
             }
             return result;
         }
 
-        static string[] ReverseStringArrOrder(string[] arr)
+        static List<string> ReverseStringArrOrder(List<string> arr)
         {
-            for (int i = 0; i < arr.Length; i++)
+            Stack<string> tempStack = new Stack<string>(arr);
+            List<string> result = new List<string>();
+
+            foreach (string word in tempStack)
             {
-                string temp = arr[i];
-                arr[i] = arr[arr.Length - i - 1];
-                arr[arr.Length - i - 1] = temp;
+                result.Add(word);
             }
-            return arr;
+            return result;
         }
 
-        static void PrintArr(string[] arr)
+        static void PrintArr(List<string> arr)
         {
             foreach (string element in arr)
             {
@@ -118,12 +91,55 @@ namespace ConsoleAppAssignment
 
         static bool IsValidYNAnswer(string answer)
         {
-            string temp = answer.ToLower().Trim();
-            if (temp == "y" || temp == "n")
+            string temp = answer.ToLowerInvariant().Trim();
+            if (temp == "y")
+            {
+                return true;
+            }
+            else if (temp == "n")
             {
                 return true;
             }
             return false;
+        }
+
+        static bool IsValidInputNumber(string input)
+        {
+            int num;
+            if (int.TryParse(input, out num) && num > 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        static List<string> ValidateAndReturnAnswers(string answer, List<string> sentence, int pref)
+        {
+            do
+            {
+                if (answer.ToLowerInvariant().Equals("y") && pref == 1)
+                {
+                    sentence = ReverseCharsOfStringArr(sentence);
+                    break;
+                }
+                else if (answer.ToLowerInvariant().Equals("y") && pref == 2)
+                {
+                    sentence = ReverseStringArrOrder(sentence);
+                    break;
+                }
+                else if (answer.ToLowerInvariant().Equals("n"))
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid answer!");
+                    answer = Console.ReadLine();
+                }
+            } while (!IsValidYNAnswer(answer));
+
+            return sentence;
         }
     }
 }
