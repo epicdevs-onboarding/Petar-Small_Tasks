@@ -14,7 +14,7 @@ namespace Task2_StudentsAndTeachers
             Teacher = 2
         }
         public int Id { set; get; }
-        public string RoleName  { set; get; }
+        public string RoleName { set; get; }
 
         public void DerriveFieldsFromInput(string input)
         {
@@ -29,9 +29,7 @@ namespace Task2_StudentsAndTeachers
                 RoleName = Title.Student.ToString();
             }
             else
-            {
                 Console.WriteLine("Invalid role!");
-            }
         }
     }
 }

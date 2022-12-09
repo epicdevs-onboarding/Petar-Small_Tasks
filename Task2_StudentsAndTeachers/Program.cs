@@ -19,7 +19,7 @@ namespace Task2_StudentsAndTeachers
             {
                 Console.WriteLine("Enter person's details as such <names> [<age>] (student/teacher): ");
                 string inputString = Console.ReadLine();
-                if(IsValidPersonInput(inputString))
+                if (IsValidPersonInput(inputString))
                 {
                     Console.WriteLine("Invalid person input! Check if you typed all required fields!");
                     continue;
@@ -29,9 +29,7 @@ namespace Task2_StudentsAndTeachers
                 Person person = new Person();
                 
                 if (inputString.Equals("q!"))
-                {
                     isInsertModeActive = false;
-                }
                 else if (person.AssignDetailsSuccessful(inputString))
                 {
                     if (person.RoleTitle.Id == 1)
@@ -41,6 +39,7 @@ namespace Task2_StudentsAndTeachers
 
                         Console.WriteLine($"Enter a grade for {student.FullName}: ");
                         student.Grade = Console.ReadLine();
+
                         classroom.AddStudent(student);
                     }
                     else if (person.RoleTitle.Id == 2 && hasTeacher == false)
@@ -50,7 +49,6 @@ namespace Task2_StudentsAndTeachers
                         teacher.Specialty = Console.ReadLine();
                         hasTeacher= true;
                     }
-                    
                 }
                 else
                     Console.WriteLine("Invalid input!");
@@ -60,9 +58,9 @@ namespace Task2_StudentsAndTeachers
             classroom.PrintClassroom();
         }
 
-        public static bool IsValidPersonInput(string input)
-        {
-            return input.Split(" ").Length >= 7 || !input.Contains("(") || !input.Contains("[") || input.IndexOf("(") == 0 || input.IndexOf("[") == 0;
-        }
+        public static bool IsValidPersonInput(string input) => input.Split(" ").Length >= 7 || !input.Contains("(") 
+                                                                                            || !input.Contains("[") 
+                                                                                            || input.IndexOf("(") == 0 
+                                                                                            || input.IndexOf("[") == 0;        
     }
 }

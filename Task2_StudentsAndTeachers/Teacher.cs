@@ -16,9 +16,6 @@ namespace Task2_StudentsAndTeachers
             get { return _speciality; }
         }
 
-        public override string ToString()
-        {
-            return $"{base.FirstName} {base.LastName} - Speciality: {_speciality}";
-        }
+        public override string ToString() => $"{base.FirstName} {base.LastName} - Speciality: {_speciality}";
     }
 }
