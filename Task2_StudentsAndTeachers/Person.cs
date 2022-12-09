@@ -2,72 +2,93 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Task2_StudentsAndTeachers
 {
     internal class Person
     {
-        private string _fullName;
-        private string _firstName;
-        private string _lastName;
-        private int _age; //18-65
-        private string _role;
+        private const int MIN_AGE = 18;
+        private const int MAX_AGE = 65;
+        
+        private const string OPEN_BRACKET_AGE = "[";
+        private const string CLOSE_BRACKET_AGE = "]";
+        private const string OPEN_BRACKET_ROLE = "(";
+        private const string CLOSE_BRACKET_ROLE = ")";
 
-        public string FullName
-        {
-            get { return _fullName; }
-            set { _fullName = value; }
-        }
-        public virtual string FirstName
-        {
-            set { _firstName = value; }
-            get { return _firstName; }
-        }
-        public virtual string LastName
-        {
-            set { _lastName = value; }
-            get { return _lastName; }
-        }
+        public Guid GuidIdentifier;
+        public string FullName { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public Role RoleTitle { get; set; }
+        public Classroom Classroom { get; set; }
+        private int _age;
+
         public int Age
         { 
             set 
             {   
-                if (value >= 18 && value <= 65)
+                if (value >= MIN_AGE && value <= MAX_AGE)
                     _age = value;
                 else
                 {
-                    Console.WriteLine("Invalid age! Age must be in the 18-65 range!");
+                    Console.WriteLine($"Invalid age! Age must be in the {MIN_AGE}-{MAX_AGE} range!");
                 }
             } 
             get { return _age; } 
         }
-        public string Role
+
+        public void SetFields(string fullName, string firstName, string lastName, int age)
         {
-            set { _role = value; }
-            get { return _role; }
+            FullName = fullName;
+            FirstName = firstName;
+            LastName = lastName;
+            Age = age;
         }
 
         public bool AssignDetailsSuccessful(string inputString)
         {
             string[] splitInput = inputString.Split(" ");
-            _firstName = splitInput[0];
-            if (splitInput.Length > 7)
-            {
-                return false;
-            }
-            for (int i = 0; i < splitInput.Length; i++)
-            {
-                if (int.TryParse(splitInput[i], out int age))
-                { 
-                    _age = age;
-                    _lastName = splitInput[i-1];
-                    _role = splitInput[i + 1].TrimStart('(').TrimEnd(')').ToLowerInvariant();
-                    break;
-                }
-            }
             
-            return true;
+            if (splitInput.Length <= 7)
+            {
+                FirstName = splitInput[0];
+                ExtractFullNameAndLastName(splitInput);
+                GuidIdentifier = Guid.NewGuid();
+                RoleTitle = new Role();
+                RoleTitle.DerriveFieldsFromInput(inputString);     
+                Age = Convert.ToInt32(GetSubstringByString(OPEN_BRACKET_AGE, CLOSE_BRACKET_AGE, inputString));
+                return true;
+            }
+            return false;
+        }
+
+        public string GetSubstringByString(string a, string b, string c)
+        {
+            return c.Substring((c.IndexOf(a) + a.Length), (c.IndexOf(b) - c.IndexOf(a) - a.Length));
+        }
+
+        private void ExtractFullNameAndLastName(string[] splitInput)
+        {
+            int roleIdx = 0; 
+            int ageIdx = 0;
+            for (int i = 0; i < splitInput.Length; i++) 
+            {
+                if (Regex.Match(splitInput[i], "\\[.*?\\]").Success)
+                    ageIdx = i;
+                else if (Regex.Match(splitInput[i], "\\(.*?\\)").Success)
+                    roleIdx = i;
+            }
+            int lastNameIdx = Math.Max(roleIdx, ageIdx) - 2;
+            LastName = splitInput[lastNameIdx];
+            StringBuilder fullName = new StringBuilder();
+
+            for (int i = 0; i < lastNameIdx+1; i++)
+            {
+                fullName.Append($"{splitInput[i]} ");
+            }
+            FullName = fullName.ToString().TrimEnd();
         }
     }
 }

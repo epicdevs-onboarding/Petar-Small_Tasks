@@ -8,13 +8,16 @@ namespace Task2_StudentsAndTeachers
     {
         static void Main(string[] args)
         {
-            List<Student> students = new List<Student>();
             bool isInsertModeActive = true;
             bool hasTeacher = false;
+            Classroom classroom = new Classroom();
             Teacher teacher = new Teacher();
+            teacher.Classroom = classroom;
+            classroom.Teacher = teacher;
+
             do
             {
-                Console.WriteLine("Enter person's details as such <names> <age> (student/teacher): ");
+                Console.WriteLine("Enter person's details as such <names> [<age>] (student/teacher): ");
                 string inputString = Console.ReadLine();
                 string firstName, lastName, fullName, role, grade;
                 int age;
@@ -27,26 +30,20 @@ namespace Task2_StudentsAndTeachers
                 }
                 else if (person.AssignDetailsSuccessful(inputString))
                 {
-                    if (person.Role.Equals("student"))
+                    if (person.RoleTitle.Id == 1)
                     {
                         Student student = new Student();
-                        student.FirstName = person.FirstName;
-                        student.LastName = person.LastName;
-                        student.FullName = person.FullName;
-                        student.Role = person.Role;
-                        student.Age = person.Age;
+                        student.SetFields(person.FullName, person.FirstName, person.LastName, person.Age);
+
                         Console.WriteLine("Enter a grade for this student: ");
-                        student.Grade = Console.ReadLine();
-                        students.Add(student);
+                        string inputGrade = Console.ReadLine();
+                        student.Grade = inputGrade;
+                        classroom.AddStudent(student);
                     }
-                    else if (person.Role.Equals("teacher") && hasTeacher == false)
+                    else if (person.RoleTitle.Id == 2 && hasTeacher == false)
                     {
-                        teacher.FirstName = person.FirstName;
-                        teacher.LastName = person.LastName;
-                        teacher.FullName = person.FullName;
-                        teacher.Role = person.Role;
-                        teacher.Age = person.Age;
-                        Console.WriteLine("Enter a specialty for this teacher: ");
+                        teacher.SetFields(person.FullName, person.FirstName, person.LastName, person.Age);
+                        Console.WriteLine("Enter a specialty for the teacher: ");
                         teacher.Specialty = Console.ReadLine();
                         hasTeacher= true;
                     }
@@ -58,25 +55,7 @@ namespace Task2_StudentsAndTeachers
 
             } while (isInsertModeActive);
 
-            Console.WriteLine("\n ===================== \n");
-
-            Console.WriteLine(teacher.ToString());
-            students = PrintClassByAge(PrintClassByGrade(students));
-
-            foreach (Student s in students)
-            {
-                Console.WriteLine($"{s.ToString()} ");
-            }
-        }
-
-        static List<Student> PrintClassByGrade(List<Student> classroom)
-        {
-            return classroom.OrderBy(s => s.Grade).ToList();
-        }
-
-        static List<Student> PrintClassByAge(List<Student> classroom)
-        {
-            return classroom.OrderByDescending(s => s.Age).ToList();
+            classroom.PrintClassroom();
         }
     }
 }
