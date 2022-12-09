@@ -11,6 +11,9 @@ namespace Task2_StudentsAndTeachers
     {
         private const int MIN_AGE = 18;
         private const int MAX_AGE = 65;
+
+        private const int MAX_NAMES = 5;
+        private const int SPECIAL_INPUT_FIELDS = 2;
         
         private const string OPEN_BRACKET_AGE = "[";
         private const string CLOSE_BRACKET_AGE = "]";
@@ -38,9 +41,7 @@ namespace Task2_StudentsAndTeachers
                 if (value >= MIN_AGE && value <= MAX_AGE)
                     _age = value;
                 else
-                {
                     Console.WriteLine($"Invalid age! Age must be in the {MIN_AGE}-{MAX_AGE} range!");
-                }
             } 
             get { return _age; } 
         }
@@ -57,7 +58,7 @@ namespace Task2_StudentsAndTeachers
         {
             string[] splitInput = inputString.Split(" ");
             
-            if (splitInput.Length <= 7)
+            if (splitInput.Length <= SPECIAL_INPUT_FIELDS + MAX_NAMES)
             {
                 FirstName = splitInput[0];
                 ExtractFullNameAndLastName(splitInput);
@@ -69,10 +70,7 @@ namespace Task2_StudentsAndTeachers
             return false;
         }
 
-        public string GetSubstringByString(string a, string b, string c)
-        {
-            return c.Substring((c.IndexOf(a) + a.Length), (c.IndexOf(b) - c.IndexOf(a) - a.Length));
-        }
+        public string GetSubstringByString(string a, string b, string c) => c.Substring((c.IndexOf(a) + a.Length), (c.IndexOf(b) - c.IndexOf(a) - a.Length));
 
         private void ExtractFullNameAndLastName(string[] splitInput)
         {
@@ -98,13 +96,7 @@ namespace Task2_StudentsAndTeachers
                 FullName = fullName.ToString().TrimEnd();
             }
             else
-            {
                 FullName = FirstName;
-            }
-            
-            
-
-            
         }
     }
 }

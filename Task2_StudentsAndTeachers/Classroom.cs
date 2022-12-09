@@ -25,7 +25,12 @@ namespace Task2_StudentsAndTeachers
         public void PrintClassroom()
         {
             Console.WriteLine("\n ===================== \n");
-            Console.WriteLine(Teacher.ToString());
+            if (Teacher.FirstName != null)
+                Console.WriteLine(Teacher.ToString());
+            else
+                Console.WriteLine("This class has no teacher.");
+                
+                            
             Console.WriteLine("*******");
             foreach (KeyValuePair<int, Student> entry in StudentsDatabase)
             {
@@ -44,7 +49,6 @@ namespace Task2_StudentsAndTeachers
             foreach (KeyValuePair<int, Student> pair in StudentsDatabase)
             {
                 if(pair.Value.GuidIdentifier == guid) return pair.Key;
-                
             }
             return 0;
         }
@@ -52,13 +56,9 @@ namespace Task2_StudentsAndTeachers
         public void ChangeGradeById(int id, string grade)
         {
             if (StudentsDatabase.TryGetValue(id, out Student s))
-            {
                 s.Grade = grade;
-            }
             else
-            {
                 Console.WriteLine("No such student with this id!");
-            }
         }
 
         public Student GetStudentById(int id)
@@ -71,13 +71,9 @@ namespace Task2_StudentsAndTeachers
         public void ChangeGradeByGuid(Guid guid, string grade)
         {
             if (StudentsDatabase.TryGetValue(GetIdByGuid(guid), out Student s))
-            {
                 s.Grade = grade;
-            }
             else
-            {
                 Console.WriteLine("No such student with this guid!");
-            }
         }
 
         /*
