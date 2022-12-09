@@ -36,8 +36,7 @@ namespace Task2_StudentsAndTeachers
                         student.SetFields(person.FullName, person.FirstName, person.LastName, person.Age);
 
                         Console.WriteLine("Enter a grade for this student: ");
-                        string inputGrade = Console.ReadLine();
-                        student.Grade = inputGrade;
+                        student.Grade = Console.ReadLine();
                         classroom.AddStudent(student);
                     }
                     else if (person.RoleTitle.Id == 2 && hasTeacher == false)

@@ -8,15 +8,21 @@ using System.Threading.Tasks;
 namespace Task2_StudentsAndTeachers
 {
     internal class Student : Person
-    {
-        private const string _gradeRegex = "[A - D][+-]?|F";
+    {   
         private string _grade;
-        public int Id { get; set; }
+        public int Id { get; private set; }
+
+        public static int globalId;
+
+        public Student()
+        {
+            Id = Interlocked.Increment(ref globalId);
+        }
 
         public string Grade
         {
             get { return _grade; }
-            set { if (Regex.Match(value, _gradeRegex).Success)
+            set { if (Regex.Match(value, "[ABCD][+-]?|F").Success)
                     _grade = value;
                   else
                     _grade = "Too ugly to read"; }

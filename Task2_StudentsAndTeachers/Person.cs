@@ -17,13 +17,19 @@ namespace Task2_StudentsAndTeachers
         private const string OPEN_BRACKET_ROLE = "(";
         private const string CLOSE_BRACKET_ROLE = ")";
 
-        public Guid GuidIdentifier;
+        public Guid GuidIdentifier { get; set; }
         public string FullName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public Role RoleTitle { get; set; }
         public Classroom Classroom { get; set; }
         private int _age;
+
+
+        public Person()
+        {
+            GuidIdentifier = Guid.NewGuid();
+        }
 
         public int Age
         { 
@@ -55,7 +61,6 @@ namespace Task2_StudentsAndTeachers
             {
                 FirstName = splitInput[0];
                 ExtractFullNameAndLastName(splitInput);
-                GuidIdentifier = Guid.NewGuid();
                 RoleTitle = new Role();
                 RoleTitle.DerriveFieldsFromInput(inputString);     
                 Age = Convert.ToInt32(GetSubstringByString(OPEN_BRACKET_AGE, CLOSE_BRACKET_AGE, inputString));
@@ -80,15 +85,26 @@ namespace Task2_StudentsAndTeachers
                 else if (Regex.Match(splitInput[i], "\\(.*?\\)").Success)
                     roleIdx = i;
             }
-            int lastNameIdx = Math.Max(roleIdx, ageIdx) - 2;
-            LastName = splitInput[lastNameIdx];
-            StringBuilder fullName = new StringBuilder();
 
-            for (int i = 0; i < lastNameIdx+1; i++)
+            int lastNameIdx = Math.Max(roleIdx, ageIdx) - 2;
+            if (!splitInput[lastNameIdx].Equals(FirstName))
             {
-                fullName.Append($"{splitInput[i]} ");
+                LastName = splitInput[lastNameIdx];
+                StringBuilder fullName = new StringBuilder();
+                for (int i = 0; i < lastNameIdx + 1; i++)
+                {
+                    fullName.Append($"{splitInput[i]} ");
+                }
+                FullName = fullName.ToString().TrimEnd();
             }
-            FullName = fullName.ToString().TrimEnd();
+            else
+            {
+                FullName = FirstName;
+            }
+            
+            
+
+            
         }
     }
 }
