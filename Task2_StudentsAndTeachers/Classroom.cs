@@ -25,7 +25,16 @@ namespace Task2_StudentsAndTeachers
         public void PrintClassroom()
         {
             Console.WriteLine("\n ===================== \n");
-            Console.WriteLine(Teacher.ToString());
+            if (!(Teacher.FirstName == null))
+            {
+                Console.WriteLine(Teacher.ToString());
+            }
+            else
+            {
+                Console.WriteLine("This class has no teacher.");
+            }
+                
+
             Console.WriteLine("*******");
             foreach (KeyValuePair<int, Student> entry in StudentsDatabase)
             {
