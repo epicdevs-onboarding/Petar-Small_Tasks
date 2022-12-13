@@ -11,6 +11,7 @@ namespace Task2_StudentsAndTeachers.Services
     internal class OutputService : GenericService
     {
         public JsonService JsonService { get; set; }
+
         public OutputService(Classroom classroom, JsonService jsonService) : base(classroom)
         {
             JsonService = jsonService;

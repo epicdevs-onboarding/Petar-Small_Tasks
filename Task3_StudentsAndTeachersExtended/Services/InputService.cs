@@ -65,8 +65,6 @@ namespace Task2_StudentsAndTeachers.Services
                     Console.WriteLine($"Invalid input for person {++i}");
                     i--;
                 }
-                    
-
             }
         }
         public bool IsValidPersonInput(string input)
@@ -75,5 +73,6 @@ namespace Task2_StudentsAndTeachers.Services
                                             && input.Contains(OPEN_BRACKET_AGE)
                                             && input.IndexOf(OPEN_BRACKET_ROLE) != 0
                                             && input.IndexOf(OPEN_BRACKET_AGE) != 0;
+
     }
 }

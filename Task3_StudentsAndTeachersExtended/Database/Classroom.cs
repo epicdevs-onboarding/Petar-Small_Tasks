@@ -16,7 +16,6 @@ namespace Task2_StudentsAndTeachers.Database
         public static List<Student> StudentsIndexed { get; set; }
         public int StudentCount { get; set; }
 
-
         public Classroom()
         {
             StudentsDatabase = new SortedDictionary<int, Student>();
@@ -30,15 +29,11 @@ namespace Task2_StudentsAndTeachers.Database
             StudentCount++;
         }
 
-        public int GetIdByGuid(Guid guid)
-        {
-            var id = StudentsDatabase
+        public int GetIdByGuid(Guid guid) =>
+            StudentsDatabase
                 .Select(s => s.Value)
                 .Where(v => v.GuidIdentifier == guid)
-                .Select(student => student.Id);
-            int result = int.Parse(id.ToString());
-            return result;
-        }
+                .Select(student => student.Id).SingleOrDefault(-1);
 
         public void ChangeGradeById(int id, string grade)
         {

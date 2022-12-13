@@ -11,17 +11,16 @@ namespace Task2_StudentsAndTeachers.Models
 {
     internal class Student : Person
     {
+        public static int globalId;
+
         private string _grade;
         [JsonIgnore]
         public int Id { get; private set; }
-
-        public static int globalId;
 
         public Student()
         {
             Id = Interlocked.Increment(ref globalId);
             _grade = string.Empty;
-            
         }
 
         public string Grade
