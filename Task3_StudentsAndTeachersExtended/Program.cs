@@ -19,7 +19,6 @@ namespace Task2_StudentsAndTeachers
             JsonService jsonService = new JsonService(classroom);
             OutputService outputService = new OutputService(classroom, jsonService);
             PersonService personService = new PersonService(classroom);
-            //Person.PersonService = personService;
 
             inputService.ReadInputFile();
             outputService.PrintClassroomInConsole();

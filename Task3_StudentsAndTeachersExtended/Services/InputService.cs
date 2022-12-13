@@ -25,7 +25,8 @@ namespace Task2_StudentsAndTeachers.Services
         {
             bool hasTeacher = false;
             int inputCount = 0;
-            string path = @"D:\onboarding-tasks\Petar-Small_Tasks\Task3_StudentsAndTeachersExtended\InputOutputFiles\input.txt";
+            string file = "input.txt";
+            string path = Path.Combine(Environment.CurrentDirectory, @"InputOutputFiles\", file);
             string[] inputArr = File.ReadAllLines(path);
             
             for (int i = 0; i < inputArr.Length - 1; i++)
@@ -37,8 +38,7 @@ namespace Task2_StudentsAndTeachers.Services
                     inputCount++;
                     continue;
                 }
-                //string firstName, lastName, fullName, role, grade;
-                //int age;
+                
                 Person person = new Person();
                 person.PersonService = new PersonService(Classroom);
 

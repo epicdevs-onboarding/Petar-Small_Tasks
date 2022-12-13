@@ -17,7 +17,7 @@ namespace Task2_StudentsAndTeachers.Services
         public void PrintClassroomInJson()
         {
             var classRoomJson = JsonConvert.SerializeObject(Classroom);
-            File.WriteAllText("D:\\onboarding-tasks\\Petar-Small_Tasks\\Task3_StudentsAndTeachersExtended\\InputOutputFiles\\output.json", classRoomJson);
+            File.WriteAllText(Path.Combine(Environment.CurrentDirectory, @"InputOutputFiles\", "output.json"), classRoomJson);
         }
     }
 }

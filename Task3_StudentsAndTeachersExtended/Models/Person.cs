@@ -31,8 +31,6 @@ namespace Task2_StudentsAndTeachers.Models
         public Person()
         {
             GuidIdentifier = Guid.NewGuid();
-           
-            //InputService = new InputService();
         }
 
         public int Age

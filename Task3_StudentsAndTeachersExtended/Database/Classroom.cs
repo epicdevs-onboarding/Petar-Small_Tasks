@@ -32,32 +32,32 @@ namespace Task2_StudentsAndTeachers.Database
 
         public int GetIdByGuid(Guid guid)
         {
-            foreach (KeyValuePair<int, Student> pair in StudentsDatabase)
-            {
-                if (pair.Value.GuidIdentifier == guid) return pair.Key;
-            }
-            return 0;
+            var id = StudentsDatabase
+                .Select(s => s.Value)
+                .Where(v => v.GuidIdentifier == guid)
+                .Select(student => student.Id);
+            int result = int.Parse(id.ToString());
+            return result;
         }
 
         public void ChangeGradeById(int id, string grade)
         {
-            if (StudentsDatabase.TryGetValue(id, out Student s))
-                s.Grade = grade;
+            if (StudentsDatabase.TryGetValue(id, out Student student))
+                student.Grade = grade;
             else
                 Console.WriteLine("No such student with this id!");
         }
 
         public Student GetStudentById(int id)
         {
-            Student s;
-            StudentsDatabase.TryGetValue(id, out s);
-            return s;
+            StudentsDatabase.TryGetValue(id, out Student student);
+            return student;
         }
 
         public void ChangeGradeByGuid(Guid guid, string grade)
         {
-            if (StudentsDatabase.TryGetValue(GetIdByGuid(guid), out Student s))
-                s.Grade = grade;
+            if (StudentsDatabase.TryGetValue(GetIdByGuid(guid), out Student student))
+                student.Grade = grade;
             else
                 Console.WriteLine("No such student with this guid!");
         }
