@@ -1,0 +1,69 @@
+{
+  "Teacher": {
+    "Specialty": "Sports",
+    "GuidIdentifier": "a03ffa8f-172d-42b1-88b6-64fa2ded15ae",
+    "FullName": "Maria Petkova",
+    "FirstName": "Maria",
+    "LastName": "Petkova",
+    "Age": 56
+  },
+  "StudentsDatabase": {
+    "0": {
+      "Grade": "A",
+      "GuidIdentifier": "f3f1eaed-0a12-4065-b834-9bac3e41709c",
+      "FullName": "Petar",
+      "FirstName": "Petar",
+      "LastName": null,
+      "Age": 20
+    },
+    "1": {
+      "Grade": "B-",
+      "GuidIdentifier": "0b18a66f-8842-459e-a2b6-2f53cf1087b8",
+      "FullName": "Ivan Ivanov Ivanov",
+      "FirstName": "Ivan",
+      "LastName": "Ivanov",
+      "Age": 21
+    },
+    "2": {
+      "Grade": "F",
+      "GuidIdentifier": "42fa75b7-b2f0-404c-8e40-008930b3ad81",
+      "FullName": "Gosho Ivanov Petkov Gogov",
+      "FirstName": "Gosho",
+      "LastName": "Gogov",
+      "Age": 18
+    },
+    "3": {
+      "Grade": "C+",
+      "GuidIdentifier": "b2013d23-2f92-42f7-803b-bf02c3eaf64b",
+      "FullName": "Dragan Draganov Draganov",
+      "FirstName": "Dragan",
+      "LastName": "Draganov",
+      "Age": 19
+    },
+    "4": {
+      "Grade": "D",
+      "GuidIdentifier": "43c30687-d1ae-4bf2-becb-8fc52f1dc6a9",
+      "FullName": "Sasho Angelov",
+      "FirstName": "Sasho",
+      "LastName": "Angelov",
+      "Age": 20
+    },
+    "5": {
+      "Grade": "A-",
+      "GuidIdentifier": "850684c1-a6cc-484c-adf1-c126d3e1a4bc",
+      "FullName": "Yanaki Gelov Yanakiev",
+      "FirstName": "Yanaki",
+      "LastName": "Yanakiev",
+      "Age": 32
+    },
+    "6": {
+      "Grade": "B",
+      "GuidIdentifier": "c2a01b3c-304b-47a8-9653-713b91a8d773",
+      "FullName": "Joro Jorev Jorev Jorev",
+      "FirstName": "Joro",
+      "LastName": "Jorev",
+      "Age": 22
+    }
+  },
+  "StudentCount": 7
+}
