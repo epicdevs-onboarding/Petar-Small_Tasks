@@ -38,9 +38,7 @@ namespace Task4_Battleships.GameElements
         {
             Turn turn = new Turn(CurrentPlayer);
 
-
-
-            // ... turn logic ...
+            // todo ... turn logic ...
 
             turn.End();
             NumberOfTurns++;
@@ -60,6 +58,7 @@ namespace Task4_Battleships.GameElements
 
         public void PrintTransitionScreen()
         {
+            Console.Clear();
             Console.WriteLine($"******************** {CurrentPlayer.Name} please let {NextPlayer.Name} conduct his turn! ******************** \n");
         }
 
@@ -72,7 +71,6 @@ namespace Task4_Battleships.GameElements
             Console.WriteLine("                                 ***************        ");
             Console.WriteLine("                             ***********************    ");
             Console.WriteLine("                         *******************************\n");
-
         }
 
         public void DecideStartingPlayer()
@@ -84,8 +82,7 @@ namespace Task4_Battleships.GameElements
 
         public void PassTurn()
         {
-            Player temp = new Player("");
-            temp = CurrentPlayer;
+            Player temp = CurrentPlayer;
             CurrentPlayer = NextPlayer;
             NextPlayer = temp;
             Console.Clear();
