@@ -13,12 +13,14 @@ namespace Task4_Battleships
         static void Main(string[] args)
         {
             Game battleships = new Game("Pesho", "Viktor");
-            battleships.DecideStartingPlayer();
-            while (true)
-            {
-                battleships.Play();
-            }
+            GameBoard board = new GameBoard();
+            board.PrintWholeBoard();
+            //battleships.DecideStartingPlayer();
             
+            //while (true)
+            //{
+            //    battleships.Play();
+            //}
         }
     }
 }

@@ -12,8 +12,8 @@ namespace Task4_Battleships.GameElements
     {
         private const string KEYWORD_HORIZONTAL = "hor";
         private const string KEYWORD_VERTICAL = "ver";
-        public Tuple<char, int> ShipCoordinates { get; set; }
-        public Tuple<char, int> StrikeCoordinates { get; set; }
+        public Tuple<int, int> ShipCoordinates { get; set; }
+        public Tuple<int, int> StrikeCoordinates { get; set; }
         public bool IsVertical { get; set; }
 
         public void TakeShipInput()
@@ -30,7 +30,7 @@ namespace Task4_Battleships.GameElements
             } while (!HasValidShipInput(input));
             
             ShipCoordinates = ParseCoordinates(input);
-            ParseOrientation(input);
+            IsVertical = ParseIsVerticalOrientation(input);
         }
 
         public void TakeStrikeInput()
@@ -40,6 +40,10 @@ namespace Task4_Battleships.GameElements
             {
                 Console.WriteLine($"Where do you want to strike your enemy?");
                 input = Console.ReadLine();
+                if (!HasValidStrikeInput(input))
+                {
+                    Console.WriteLine("Invalid target for strike!");
+                }
 
             } while (!HasValidStrikeInput(input));
 
@@ -62,20 +66,14 @@ namespace Task4_Battleships.GameElements
             return false;
         }
 
-        private Tuple<char, int> ParseCoordinates(string input)
+        private Tuple<int, int> ParseCoordinates(string input)
         {
-            char letter = Convert.ToChar(input.Substring(0, 1));
-            int number;
-
-            if (input.Length == 2)
-                number = Convert.ToInt32(input.Substring(1, 1));
-            else
-                number = Convert.ToInt32(input.Substring(1, 2));
-
-            return Tuple.Create(letter, number);
+            int letterIdx = (int)Enum.Parse(typeof(CoordinateLiteral), input.Substring(0, 1));
+            int number = int.Parse(input.Substring(1));
+            return Tuple.Create(letterIdx, number);
         }
 
-        private bool ParseOrientation(string input)
+        private bool ParseIsVerticalOrientation(string input)
         {
             if (input.IndexOf(KEYWORD_VERTICAL, StringComparison.OrdinalIgnoreCase) > -1)
                 return true;

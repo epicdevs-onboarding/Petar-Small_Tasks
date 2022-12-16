@@ -24,6 +24,7 @@ namespace Task4_Battleships.GameElements
             Player1 = new HumanPlayer(name1);
             Player2 = new HumanPlayer(name2);
             Log = new Log();
+            NumberOfTurns = 0;
             HaveBot = false;
         }
         
@@ -32,28 +33,41 @@ namespace Task4_Battleships.GameElements
             Player1 = new HumanPlayer(humanName);
             Player2 = new BotPlayer(DEAULT_BOT_NAME);
             Log = new Log();
+            NumberOfTurns = 0;
+            HaveBot = true;
         }
 
         public void Play()
         {
-            Turn turn = new Turn(CurrentPlayer);
-
-            // todo ... turn logic ...
-
-            turn.End();
-            NumberOfTurns++;
-            Log.Add(turn);
-            if (NextPlayer.HasLost())
+            if (NumberOfTurns == 0)
             {
-                PrintFinalScreen();
-                return;
+                CurrentPlayer.PlacingShipsPhase();
+                PrintTransitionScreen();
+                NextPlayer.PlacingShipsPhase();
+                PrintTransitionScreen();
             }
             else
             {
-                PassTurn();
-                PrintTransitionScreen();
+                Turn turn = new Turn(CurrentPlayer);
+
+                // todo current player strike -> result of the strike
+                CurrentPlayer.Strike(NextPlayer.Board);
+
+                turn.End();
+                NumberOfTurns++;
+                Log.Add(turn);
+
+                if (NextPlayer.HasLost())
+                {
+                    PrintFinalScreen();
+                    return;
+                }
+                else
+                {
+                    PassTurn();
+                    PrintTransitionScreen();
+                }
             }
-                
         }
 
         public void PrintTransitionScreen()
