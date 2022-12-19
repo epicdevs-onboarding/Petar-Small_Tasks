@@ -9,6 +9,8 @@ namespace Task4_Battleships.Boards
 {
     internal class BoardSquare
     {
+        public readonly char HIT_CHAR = 'x';
+        public readonly char MISS_CHAR = '-';
         public Tuple<int, int> Coordinate { get; set; }
         public char Icon { get; set; }
         public bool IsShip { get; set; }
@@ -25,13 +27,14 @@ namespace Task4_Battleships.Boards
             Coordinate = Tuple.Create(letterIdx, number);
         }
 
-        public void Strike()
+        public char Strike()
         {
             IsStriked = true;
             if (IsShip)
                 Icon = 'x';
             else if (IsEmpty)
                 Icon = '-';
+            return Icon;
         }
 
         public override string ToString()

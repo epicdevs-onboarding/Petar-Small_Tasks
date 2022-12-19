@@ -68,8 +68,9 @@ namespace Task4_Battleships.GameElements
 
         private Tuple<int, int> ParseCoordinates(string input)
         {
-            int letterIdx = (int)Enum.Parse(typeof(CoordinateLiteral), input.Substring(0, 1));
-            int number = int.Parse(input.Substring(1));
+            string[] inputSplit = input.Split(" ");
+            int letterIdx = (int)Enum.Parse(typeof(CoordinateLiteral), input.Substring(0, 1), true);
+            int number = int.Parse(inputSplit[0].Remove(0, 1));
             return Tuple.Create(letterIdx, number);
         }
 

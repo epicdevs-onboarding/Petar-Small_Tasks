@@ -20,7 +20,5 @@ namespace Task4_Battleships.Ships
                 return Hits >= Length;
             }
         }
-
-
     }
 }

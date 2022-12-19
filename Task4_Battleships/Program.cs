@@ -12,15 +12,20 @@ namespace Task4_Battleships
     {
         static void Main(string[] args)
         {
-            Game battleships = new Game("Pesho", "Viktor");
+            Game battleships = new Game("Viktor", "Pesho");
+            /*
             GameBoard board = new GameBoard();
-            board.PrintWholeBoard();
-            //battleships.DecideStartingPlayer();
-            
-            //while (true)
-            //{
-            //    battleships.Play();
-            //}
+            foreach (BoardSquare sq in board.DefendingSide)
+            {
+                Console.WriteLine("{" + sq.Coordinate.Item1 + ", " + sq.Coordinate.Item2 + "}");
+            }
+            */
+            battleships.DecideStartingPlayer();
+
+            while (true)
+            {
+                battleships.Play();
+            }
         }
     }
 }

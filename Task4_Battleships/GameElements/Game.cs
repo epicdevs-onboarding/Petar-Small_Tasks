@@ -17,7 +17,6 @@ namespace Task4_Battleships.GameElements
         public Player NextPlayer { get; set; }
         public Log Log { get; set; }
         public int NumberOfTurns { get; set; }
-        
 
         public Game(string name1, string name2) //Player vs. Player
         { 
@@ -39,19 +38,17 @@ namespace Task4_Battleships.GameElements
 
         public void Play()
         {
+            CurrentPlayer.Board.PrintWholeBoard();
             if (NumberOfTurns == 0)
             {
                 CurrentPlayer.PlacingShipsPhase();
                 PrintTransitionScreen();
-                NextPlayer.PlacingShipsPhase();
-                PrintTransitionScreen();
+                PassTurn();
             }
             else
             {
                 Turn turn = new Turn(CurrentPlayer);
-
-                // todo current player strike -> result of the strike
-                CurrentPlayer.Strike(NextPlayer.Board);
+                CurrentPlayer.Strike(NextPlayer);
 
                 turn.End();
                 NumberOfTurns++;
@@ -60,7 +57,6 @@ namespace Task4_Battleships.GameElements
                 if (NextPlayer.HasLost())
                 {
                     PrintFinalScreen();
-                    return;
                 }
                 else
                 {
@@ -74,10 +70,13 @@ namespace Task4_Battleships.GameElements
         {
             Console.Clear();
             Console.WriteLine($"******************** {CurrentPlayer.Name} please let {NextPlayer.Name} conduct his turn! ******************** \n");
+            Console.WriteLine($"{NextPlayer.Name}, press a key to begin!");
+            Console.ReadKey();
         }
 
         public void PrintFinalScreen()
         {
+            Console.Clear();
             Console.WriteLine("                         *******************************");
             Console.WriteLine("                             ***********************    ");
             Console.WriteLine("                                 ***************        ");
@@ -85,13 +84,24 @@ namespace Task4_Battleships.GameElements
             Console.WriteLine("                                 ***************        ");
             Console.WriteLine("                             ***********************    ");
             Console.WriteLine("                         *******************************\n");
+            Console.ReadKey();
+            return;
         }
 
         public void DecideStartingPlayer()
         {
             Random r = new Random();
             List<Player> list = new List<Player> { Player1, Player2};
-            CurrentPlayer = list[r.Next(0, 1)];
+            CurrentPlayer = list[r.Next(0, 2)];
+
+            if (CurrentPlayer.Equals(Player1))
+                NextPlayer = Player2;
+            else
+                NextPlayer = Player1;
+
+            Console.WriteLine($"{CurrentPlayer.Name} starts the game!");
+            Console.WriteLine($"{CurrentPlayer.Name}, press a key to begin!");
+            Console.ReadKey();
         }
 
         public void PassTurn()

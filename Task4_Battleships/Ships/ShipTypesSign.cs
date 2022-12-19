@@ -8,6 +8,6 @@ namespace Task4_Battleships.Ships
 {
     public enum ShipTypesSign
     {
-        A, B, S, C, D
+        A = 1, B= 2, S = 3, C = 4, D = 5
     }
 }
