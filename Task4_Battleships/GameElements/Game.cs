@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 using Task4_Battleships.Exceptions;
@@ -12,13 +13,21 @@ namespace Task4_Battleships.GameElements
         private const string DEAULT_BOT_NAME = "Computer";
 
         public bool HaveBot { get; set; }
-        public Player Player1 { get; init; }
-        public Player Player2 { get; init; }
+        public Player Player1 { get; set; }
+        public Player Player2 { get; set; }
         public Player CurrentPlayer { get; set; }
         public Player NextPlayer { get; set; }
         public Log Log { get; set; }
         public int NumberOfTurns { get; set; }
         public ExceptionHandler ExceptionHandler { get; set; }
+
+        public Game()
+        {
+            Log = new Log();
+            NumberOfTurns = -1;
+            HaveBot = false;
+            ExceptionHandler = new ExceptionHandler();
+        }
 
         public Game(string name1, string name2) //Player vs. Player
         { 
@@ -27,16 +36,6 @@ namespace Task4_Battleships.GameElements
             Log = new Log();
             NumberOfTurns = -1;
             HaveBot = false;
-            ExceptionHandler = new ExceptionHandler();
-        }
-        
-        public Game(string humanName) //Player vs. Comupter
-        {
-            Player1 = new HumanPlayer(humanName);
-            Player2 = new BotPlayer(DEAULT_BOT_NAME);
-            Log = new Log();
-            NumberOfTurns = -1;
-            HaveBot = true;
             ExceptionHandler = new ExceptionHandler();
         }
 
@@ -87,7 +86,7 @@ namespace Task4_Battleships.GameElements
             Console.WriteLine("                             ***********************    ");
             Console.WriteLine("                         *******************************\n");
             Console.ReadLine();
-            return;
+            Environment.Exit(0);
         }
 
         public void DecideStartingPlayer()
@@ -112,6 +111,50 @@ namespace Task4_Battleships.GameElements
             CurrentPlayer = NextPlayer;
             NextPlayer = temp;
             Console.Clear();
+        }
+
+        public void Start()
+        {
+            int mode;
+            string input;
+            do
+            {
+                Console.WriteLine("*************************   Welcome to Battleships!   *************************");
+                Console.WriteLine("Please choose gamemode:");
+                Console.WriteLine("-----------------------");
+                Console.WriteLine("(1) Player vs. Player");
+                Console.WriteLine("(2) Player vs. AI");
+                input = Console.ReadLine();
+                if (!int.TryParse(input.Trim(), out mode) && (mode != 1 || mode != 2))
+                {
+                    Console.WriteLine("Invalid input! Pleace enter a valid mode!");
+                }
+            } while (!int.TryParse(input.Trim(), out mode) && (mode != 1 || mode != 2));
+            
+            switch (mode)
+            {
+                case 1 : GamemodeOnlyHuman(); break;
+                case 2 :
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Sorry, this gamemode is not supported yet!");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Start();
+                        break;
+                    }
+            }
+            Console.WriteLine("The game will decide automaticaly who will start first...");
+            DecideStartingPlayer();
+        }
+
+        public void GamemodeOnlyHuman()
+        {
+            Console.Write("Enter the first player's name: ");
+            string firstPlayerName = Console.ReadLine();
+            Console.Write("Enter the second player's name: ");
+            string secondPlayerName = Console.ReadLine();
+            Player1 = new Player(firstPlayerName);
+            Player2 = new Player(secondPlayerName);
         }
     }
 }

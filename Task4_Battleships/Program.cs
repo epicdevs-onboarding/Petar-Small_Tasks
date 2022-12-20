@@ -12,8 +12,8 @@ namespace Task4_Battleships
     {
         static void Main(string[] args)
         {
-            Game battleships = new Game("Viktor", "Pesho");
-            battleships.DecideStartingPlayer();
+            Game battleships = new Game();
+            battleships.Start();
             while (true)
             {
                 try
