@@ -14,6 +14,10 @@ namespace Task4_Battleships.Boards
         public readonly int HEIGHT = 10;
         public readonly ConsoleColor FRAME_COLOR = ConsoleColor.Cyan;
         public readonly ConsoleColor SHIP_COLOR = ConsoleColor.Blue;
+        public readonly ConsoleColor DEF_HIT_COLOR = ConsoleColor.Red;
+        public readonly ConsoleColor DEF_MISS_COLOR = ConsoleColor.Green;
+        public readonly ConsoleColor ATK_HIT_COLOR = ConsoleColor.Green;
+        public readonly ConsoleColor ATK_MISS_COLOR = ConsoleColor.Red;
 
         public List<BoardSquare> AttackingSide { get; set; }
         public List<BoardSquare> DefendingSide { get; set; }
@@ -27,12 +31,12 @@ namespace Task4_Battleships.Boards
         public void PrintWholeBoard()
         {
             Console.Clear();
-            PrintSide(AttackingSide);
+            PrintSide(AttackingSide, false);
             Console.WriteLine();
-            PrintSide(DefendingSide);
+            PrintSide(DefendingSide, true);
         }
 
-        private void PrintSide(List<BoardSquare> side)
+        private void PrintSide(List<BoardSquare> side, bool isDefendingSide)
         {
             Console.Write("   ");
             foreach (string letter in Enum.GetNames(typeof(CoordinateLiteral))) // prints the letter coordinate frame
@@ -62,7 +66,10 @@ namespace Task4_Battleships.Boards
                 }
                 else if (square.IsShip)
                 {
-                    Console.ForegroundColor = SHIP_COLOR;
+                    if (isDefendingSide)
+                        Console.ForegroundColor = square.Icon == 'x' ?  DEF_HIT_COLOR : SHIP_COLOR;
+                    else
+                        Console.ForegroundColor = square.Icon == 'x' ? ATK_HIT_COLOR : ConsoleColor.White;
                     Console.Write(square + " ");
                     if (square.Coordinate.Item2 >= WIDTH)
                         Console.WriteLine();
@@ -70,9 +77,14 @@ namespace Task4_Battleships.Boards
                 }
                 else
                 {
+                    if (isDefendingSide)
+                        Console.ForegroundColor = square.Icon == '-' ? DEF_MISS_COLOR : ConsoleColor.White;
+                    else    
+                        Console.ForegroundColor = square.Icon == '-' ? ATK_MISS_COLOR : ConsoleColor.White;
                     Console.Write(square + " ");
                     if (square.Coordinate.Item2 >= WIDTH)
                         Console.WriteLine();
+                    Console.ForegroundColor = ConsoleColor.White;
                 }
             }
         }

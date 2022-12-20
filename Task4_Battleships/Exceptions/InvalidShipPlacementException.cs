@@ -9,5 +9,7 @@ namespace Task4_Battleships.Exceptions
     internal class InvalidShipPlacementException : Exception
     {
         public InvalidShipPlacementException(string message) : base(message) { }
+
+        public InvalidShipPlacementException() : base("Invalid ship placement!") { }
     }
 }

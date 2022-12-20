@@ -9,5 +9,7 @@ namespace Task4_Battleships.Exceptions
     internal class InvalidCoordinatesException : Exception
     {
         public InvalidCoordinatesException(string message) : base(message) { }
+
+        public InvalidCoordinatesException() : base("Invalid coordinates!") { }
     }
 }

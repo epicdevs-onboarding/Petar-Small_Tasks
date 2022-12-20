@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Task4_Battleships.Exceptions;
 
 namespace Task4_Battleships.GameElements
 {
@@ -17,14 +18,16 @@ namespace Task4_Battleships.GameElements
         public Player NextPlayer { get; set; }
         public Log Log { get; set; }
         public int NumberOfTurns { get; set; }
+        public ExceptionHandler ExceptionHandler { get; set; }
 
         public Game(string name1, string name2) //Player vs. Player
         { 
             Player1 = new HumanPlayer(name1);
             Player2 = new HumanPlayer(name2);
             Log = new Log();
-            NumberOfTurns = 0;
+            NumberOfTurns = -1;
             HaveBot = false;
+            ExceptionHandler = new ExceptionHandler();
         }
         
         public Game(string humanName) //Player vs. Comupter
@@ -32,32 +35,31 @@ namespace Task4_Battleships.GameElements
             Player1 = new HumanPlayer(humanName);
             Player2 = new BotPlayer(DEAULT_BOT_NAME);
             Log = new Log();
-            NumberOfTurns = 0;
+            NumberOfTurns = -1;
             HaveBot = true;
+            ExceptionHandler = new ExceptionHandler();
         }
 
         public void Play()
         {
             CurrentPlayer.Board.PrintWholeBoard();
-            if (NumberOfTurns == 0)
+            if (NumberOfTurns < 1)
             {
                 CurrentPlayer.PlacingShipsPhase();
                 PrintTransitionScreen();
+                NumberOfTurns++;
                 PassTurn();
             }
             else
             {
                 Turn turn = new Turn(CurrentPlayer);
                 CurrentPlayer.Strike(NextPlayer);
-
                 turn.End();
                 NumberOfTurns++;
                 Log.Add(turn);
 
                 if (NextPlayer.HasLost())
-                {
                     PrintFinalScreen();
-                }
                 else
                 {
                     PassTurn();
@@ -84,7 +86,7 @@ namespace Task4_Battleships.GameElements
             Console.WriteLine("                                 ***************        ");
             Console.WriteLine("                             ***********************    ");
             Console.WriteLine("                         *******************************\n");
-            Console.ReadKey();
+            Console.ReadLine();
             return;
         }
 
