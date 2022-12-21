@@ -76,7 +76,7 @@ namespace Task4_Battleships.Boards
                     else
                         Console.ForegroundColor = square.Icon == 'x' ? ATK_HIT_COLOR : ConsoleColor.White;
                     Console.Write(square + " ");
-                    if (square.Coordinate.Item2 >= WIDTH)
+                    if (square.Coordinate.Item1 >= WIDTH)
                         Console.WriteLine();
                     Console.ForegroundColor = ConsoleColor.White;
                 }
@@ -87,7 +87,7 @@ namespace Task4_Battleships.Boards
                     else    
                         Console.ForegroundColor = square.Icon == '-' ? ATK_MISS_COLOR : ConsoleColor.White;
                     Console.Write(square + " ");
-                    if (square.Coordinate.Item2 >= WIDTH)
+                    if (square.Coordinate.Item1 >= WIDTH)
                         Console.WriteLine();
                     Console.ForegroundColor = ConsoleColor.White;
                 }
@@ -97,9 +97,9 @@ namespace Task4_Battleships.Boards
         private List<BoardSquare> BoardCreation()
         {
             List<BoardSquare> board = new List<BoardSquare>();
-            for (int i = 1; i <= WIDTH; i++)
+            for (int i = 1; i <= HEIGHT; i++)
             {
-                for (int j = 0; j <= HEIGHT; j++)
+                for (int j = 0; j <= WIDTH; j++)
                 {
                     if (i == 1 && j == 0)
                     {
@@ -109,7 +109,7 @@ namespace Task4_Battleships.Boards
                     else if (j == 0)
                         board.Add(new BoardSquare(0, 0)); 
                     else
-                        board.Add(new BoardSquare(Convert.ToChar((CoordinateLiteral)i), j)); 
+                        board.Add(new BoardSquare(j, i)); 
                 }
             }
             return board;
