@@ -36,6 +36,11 @@ namespace Task4_Battleships.Boards
             PrintSide(DefendingSide, true);
         }
 
+        public void PrintDefendingSide()
+        {
+            PrintSide(DefendingSide, true);
+        }
+
         private void PrintSide(List<BoardSquare> side, bool isDefendingSide)
         {
             Console.Write("   ");

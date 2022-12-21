@@ -26,7 +26,6 @@ namespace Task4_Battleships.GameElements
         {
             Stopwatch.Stop();
             Duration = Stopwatch.Elapsed;
-
         }
     }
 }

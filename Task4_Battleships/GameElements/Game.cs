@@ -86,6 +86,13 @@ namespace Task4_Battleships.GameElements
             Console.WriteLine("                             ***********************    ");
             Console.WriteLine("                         *******************************\n");
             Console.ReadLine();
+
+            Console.WriteLine("End game boards...");
+            Console.WriteLine($"{NextPlayer.Name}'s board:");
+            NextPlayer.Board.PrintDefendingSide();
+            Console.WriteLine($"{CurrentPlayer.Name}'s board:");
+            CurrentPlayer.Board.PrintDefendingSide();
+            Console.ReadLine();
             Environment.Exit(0);
         }
 
