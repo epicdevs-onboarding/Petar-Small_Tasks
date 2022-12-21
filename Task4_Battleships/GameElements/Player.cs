@@ -44,7 +44,7 @@ namespace Task4_Battleships.GameElements
         {
             foreach (Ship ship in StartingShips)
             {
-                bool hasException = true;
+                bool hasException = false;
                 do
                 {
                     try
@@ -56,13 +56,13 @@ namespace Task4_Battleships.GameElements
                         
                         PlaceSingleShip(ship, InputUtility.ShipCoordinates, InputUtility.IsVertical);
                         AvailableShips.Add(ship);
-                        hasException= false;
+                        hasException= true;
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine(e.Message);
                     }
-                } while (hasException);
+                } while (!hasException);
             }
             Console.WriteLine($"{Name}, all of your ships are placed! Press any key to pass turn...");
             Console.ReadKey();
@@ -140,12 +140,12 @@ namespace Task4_Battleships.GameElements
 
             foreach (BoardSquare sq in Board.DefendingSide)
             {
-                if ((!isVertical && ((sq.Coordinate.Item1 == coordinates.Item2)
-                                 && (sq.Coordinate.Item2 >= coordinates.Item1
-                                 && sq.Coordinate.Item2 < coordinates.Item1 + ship.Length))) 
-                  || (isVertical && ((sq.Coordinate.Item2 == coordinates.Item1)
-                                 && (sq.Coordinate.Item1 >= coordinates.Item2
-                                 && sq.Coordinate.Item1 < coordinates.Item2 + ship.Length))))
+                if ((!isVertical && ((sq.Coordinate.Item2 == coordinates.Item2)
+                                 && (sq.Coordinate.Item1 >= coordinates.Item1
+                                 && sq.Coordinate.Item1 < coordinates.Item1 + ship.Length))) 
+                  || (isVertical && ((sq.Coordinate.Item1 == coordinates.Item1)
+                                 && (sq.Coordinate.Item2 >= coordinates.Item2
+                                 && sq.Coordinate.Item2 < coordinates.Item2 + ship.Length))))
                 {
                     sq.IsEmpty = false;
                     sq.IsShip = true;
@@ -161,18 +161,18 @@ namespace Task4_Battleships.GameElements
             foreach (BoardSquare sq in Board.DefendingSide)
             {
                 if (!isVertical && sq.IsShip 
-                                && ((sq.Coordinate.Item1 == coordinates.Item2)
-                                && (sq.Coordinate.Item2 >= coordinates.Item1
-                                && sq.Coordinate.Item2 < coordinates.Item1 + ship.Length))) // horizontal
+                                && ((sq.Coordinate.Item2 == coordinates.Item2)
+                                && (sq.Coordinate.Item1 >= coordinates.Item1
+                                && sq.Coordinate.Item1 < coordinates.Item1 + ship.Length))) // horizontal
                 {
-                    hasOverlap= true;
+                    hasOverlap = true;
                 }
                 else if (isVertical && sq.IsShip 
-                                    && ((sq.Coordinate.Item2 == coordinates.Item1)
-                                    && (sq.Coordinate.Item1 >= coordinates.Item2
-                                    && sq.Coordinate.Item1 < coordinates.Item2 + ship.Length))) // vertical
+                                    && ((sq.Coordinate.Item1 == coordinates.Item1)
+                                    && (sq.Coordinate.Item2 >= coordinates.Item2
+                                    && sq.Coordinate.Item2 < coordinates.Item2 + ship.Length))) // vertical
                 {
-                    hasOverlap= true;
+                    hasOverlap = true;
                 }
             }
             return hasOverlap;

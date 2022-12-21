@@ -46,9 +46,7 @@ namespace Task4_Battleships.Boards
             Console.Write("   ");
             foreach (string letter in Enum.GetNames(typeof(CoordinateLiteral))) // prints the letter coordinate frame
             {
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.Write(letter + " ");
-                Console.ForegroundColor = ConsoleColor.White;
+                PrintInColor(letter + " ", FRAME_COLOR);
             }
             Console.WriteLine();
             int numberFrameIdx = 1;
@@ -57,49 +55,55 @@ namespace Task4_Battleships.Boards
                 if (square.Coordinate.Item1 == 0 && square.Coordinate.Item2 == 0) // prints the number coordinate frame
                 {
                     if (numberFrameIdx > 9)
-                    {
-                        Console.ForegroundColor = FRAME_COLOR;
-                        Console.Write($"{numberFrameIdx++} ");
-                        Console.ForegroundColor = ConsoleColor.White;
-                    }  
+                        PrintInColor($"{numberFrameIdx++} ", FRAME_COLOR);
                     else
-                    {
-                        Console.ForegroundColor = FRAME_COLOR;
-                        Console.Write($"{numberFrameIdx++}  ");
-                        Console.ForegroundColor = ConsoleColor.White;
-                    }
+                        PrintInColor($"{numberFrameIdx++}  ", FRAME_COLOR);
                 }
-                else if (square.IsShip)
-                {
-                    if (isDefendingSide)
-                        Console.ForegroundColor = square.Icon == 'x' ?  DEF_HIT_COLOR : SHIP_COLOR;
-                    else
-                        Console.ForegroundColor = square.Icon == 'x' ? ATK_HIT_COLOR : ConsoleColor.White;
-                    Console.Write(square + " ");
-                    if (square.Coordinate.Item2 >= WIDTH)
-                        Console.WriteLine();
-                    Console.ForegroundColor = ConsoleColor.White;
-                }
-                else
-                {
-                    if (isDefendingSide)
-                        Console.ForegroundColor = square.Icon == '-' ? DEF_MISS_COLOR : ConsoleColor.White;
-                    else    
-                        Console.ForegroundColor = square.Icon == '-' ? ATK_MISS_COLOR : ConsoleColor.White;
-                    Console.Write(square + " ");
-                    if (square.Coordinate.Item2 >= WIDTH)
-                        Console.WriteLine();
-                    Console.ForegroundColor = ConsoleColor.White;
-                }
+                else 
+                    DetermineIconColor(square, isDefendingSide);
             }
+        }
+
+        private void DetermineIconColor(BoardSquare square, bool isDefendingSide)
+        {   
+            if (square.IsShip)
+            {
+                if (isDefendingSide)
+                    Console.ForegroundColor = square.Icon == 'x' ? DEF_HIT_COLOR : SHIP_COLOR;
+                else
+                    Console.ForegroundColor = square.Icon == 'x' ? ATK_HIT_COLOR : ConsoleColor.White;
+                    Console.Write(square + " ");
+                    if (square.Coordinate.Item2 >= WIDTH)
+                        Console.WriteLine();
+                    Console.ForegroundColor = ConsoleColor.White;
+            }
+            else
+            {
+                if (isDefendingSide)
+                    Console.ForegroundColor = square.Icon == '-' ? DEF_MISS_COLOR : ConsoleColor.White;
+                else
+                    Console.ForegroundColor = square.Icon == '-' ? ATK_MISS_COLOR : ConsoleColor.White;
+            }
+            Console.Write(square + " ");
+            
+            if (square.Coordinate.Item1 >= WIDTH)
+                Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        private void PrintInColor(string text, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.Write(text);
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         private List<BoardSquare> BoardCreation()
         {
             List<BoardSquare> board = new List<BoardSquare>();
-            for (int i = 1; i <= WIDTH; i++)
+            for (int i = 1; i <= HEIGHT; i++)
             {
-                for (int j = 0; j <= HEIGHT; j++)
+                for (int j = 0; j <= WIDTH; j++)
                 {
                     if (i == 1 && j == 0)
                     {
@@ -109,7 +113,7 @@ namespace Task4_Battleships.Boards
                     else if (j == 0)
                         board.Add(new BoardSquare(0, 0)); 
                     else
-                        board.Add(new BoardSquare(Convert.ToChar((CoordinateLiteral)i), j)); 
+                        board.Add(new BoardSquare(j, i)); 
                 }
             }
             return board;
