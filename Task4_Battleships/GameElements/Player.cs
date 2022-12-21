@@ -44,7 +44,7 @@ namespace Task4_Battleships.GameElements
         {
             foreach (Ship ship in StartingShips)
             {
-                bool hasException = true;
+                bool hasException = false;
                 do
                 {
                     try
@@ -56,13 +56,13 @@ namespace Task4_Battleships.GameElements
                         
                         PlaceSingleShip(ship, InputUtility.ShipCoordinates, InputUtility.IsVertical);
                         AvailableShips.Add(ship);
-                        hasException= false;
+                        hasException= true;
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine(e.Message);
                     }
-                } while (hasException);
+                } while (!hasException);
             }
             Console.WriteLine($"{Name}, all of your ships are placed! Press any key to pass turn...");
             Console.ReadKey();
