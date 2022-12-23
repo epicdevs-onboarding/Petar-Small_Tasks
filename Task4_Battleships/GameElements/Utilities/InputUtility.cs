@@ -6,12 +6,13 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Task4_Battleships.Exceptions;
 
-namespace Task4_Battleships.GameElements
+namespace Task4_Battleships.GameElements.Utilities
 {
-    internal class InputUtility
+    internal class InputUtility : GenericUtility, IUtility
     {
         private const string KEYWORD_HORIZONTAL = "hor";
         private const string KEYWORD_VERTICAL = "ver";
+
         public Tuple<int, int> ShipCoordinates { get; set; }
         public Tuple<int, int> StrikeCoordinates { get; set; }
         public bool IsVertical { get; set; }
@@ -28,7 +29,7 @@ namespace Task4_Battleships.GameElements
                     Console.WriteLine("Please enter the data formated correctly as following: <coordinates> (ver/hor)");
 
             } while (!HasValidShipInput(input));
-            
+
             ShipCoordinates = ParseCoordinates(input);
             IsVertical = ParseIsVerticalOrientation(input);
         }
@@ -81,7 +82,7 @@ namespace Task4_Battleships.GameElements
             else if (input.IndexOf(KEYWORD_HORIZONTAL, StringComparison.OrdinalIgnoreCase) > -1)
                 return false;
             else
-                throw new Exceptions.InvalidShipPlacementException("Wrong ship placement orientation!");
+                throw new InvalidShipPlacementException("Wrong ship placement orientation!");
         }
     }
 }

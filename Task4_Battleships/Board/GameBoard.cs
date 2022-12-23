@@ -72,10 +72,6 @@ namespace Task4_Battleships.Boards
                     Console.ForegroundColor = square.Icon == 'x' ? DEF_HIT_COLOR : SHIP_COLOR;
                 else
                     Console.ForegroundColor = square.Icon == 'x' ? ATK_HIT_COLOR : ConsoleColor.White;
-                    Console.Write(square + " ");
-                    if (square.Coordinate.Item2 >= WIDTH)
-                        Console.WriteLine();
-                    Console.ForegroundColor = ConsoleColor.White;
             }
             else
             {
