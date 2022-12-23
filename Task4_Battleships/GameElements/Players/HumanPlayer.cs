@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Task4_Battleships.Boards;
 using Task4_Battleships.Exceptions;
+using Task4_Battleships.GameElements.Utilities;
 using Task4_Battleships.Ships;
 
 namespace Task4_Battleships.GameElements.Players
@@ -14,6 +15,7 @@ namespace Task4_Battleships.GameElements.Players
     {
         public HumanPlayer(string name) : base(name)
         {
+            InputUtility = new InputUtility();
         }
 
         public void PlaceSingleShip(Ship ship, Tuple<int, int> coordinates, bool isVertical)
@@ -76,7 +78,7 @@ namespace Task4_Battleships.GameElements.Players
             InputUtility.TakeStrikeInput();
             foreach (BoardSquare square in opponent.Board.DefendingSide)
             {
-                if (square.Coordinate.Equals(Tuple.Create(InputUtility.StrikeCoordinates.Item2, InputUtility.StrikeCoordinates.Item1)))
+                if (square.Coordinate.Equals(Tuple.Create(InputUtility.StrikeCoordinates.Item1, InputUtility.StrikeCoordinates.Item2)))
                 {
                     if (square.IsShip)
                     {

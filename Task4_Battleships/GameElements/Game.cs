@@ -31,16 +31,6 @@ namespace Task4_Battleships.GameElements
             ExceptionHandler = new ExceptionHandler();
         }
 
-        public Game(string name1, string name2) //Player vs. Player
-        { 
-            Player1 = new HumanPlayer(name1);
-            Player2 = new HumanPlayer(name2);
-            Log = new Log();
-            NumberOfTurns = -1;
-            HaveBot = false;
-            ExceptionHandler = new ExceptionHandler();
-        }
-
         public void Play()
         {
             CurrentPlayer.Board.PrintWholeBoard();
@@ -143,14 +133,8 @@ namespace Task4_Battleships.GameElements
             switch (mode)
             {
                 case 1 : GamemodeOnlyHuman(); break;
-                case 2 :
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Sorry, this gamemode is not supported yet!");
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Start();
-                        break;
-                    }
+                case 2 : GamemodeHumanVsComputer(); break;
+                default: Start(); break;
             }
             Console.WriteLine("The game will decide automaticaly who will start first...");
             DecideStartingPlayer();
@@ -171,7 +155,7 @@ namespace Task4_Battleships.GameElements
             Console.Write("Enter player's name: ");
             string playerName = Console.ReadLine();
             Player1 = new HumanPlayer(playerName);
-            Player1 = new BotPlayer(DEAULT_BOT_NAME);
+            Player2 = new BotPlayer(DEAULT_BOT_NAME);
         }
     }
 }

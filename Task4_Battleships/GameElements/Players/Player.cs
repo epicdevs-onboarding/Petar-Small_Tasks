@@ -34,7 +34,6 @@ namespace Task4_Battleships.GameElements
             };
             Board = new GameBoard();
             AvailableShips = new List<Ship>();
-            InputUtility = new InputUtility();
         }
 
         protected bool IsOverlappingShips(Ship ship, Tuple<int, int> coordinates, bool isVertical)
