@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Task4_Battleships.Boards;
 using Task4_Battleships.Exceptions;
 
 namespace Task4_Battleships.GameElements.Utilities
@@ -16,6 +17,12 @@ namespace Task4_Battleships.GameElements.Utilities
         public Tuple<int, int> ShipCoordinates { get; set; }
         public Tuple<int, int> StrikeCoordinates { get; set; }
         public bool IsVertical { get; set; }
+        public Stack<BoardSquare> Targets { get; set; }
+
+        public void AddTargets(BoardSquare square)
+        {
+            throw new NotImplementedException();
+        }
 
         public void TakeShipInput()
         {

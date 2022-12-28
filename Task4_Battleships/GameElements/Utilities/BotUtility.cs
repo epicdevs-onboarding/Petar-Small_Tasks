@@ -13,11 +13,20 @@ namespace Task4_Battleships.GameElements.Utilities
         public Tuple<int, int> ShipCoordinates { get; set; }
         public Tuple<int, int> StrikeCoordinates { get; set; }
         public bool IsVertical { get; set; }
-
+        public Stack<BoardSquare> Targets { get; set; }
         private GameBoard Board { get; set; }
+
+        public void AddTargets(BoardSquare square)
+        {
+            Targets.Push(new BoardSquare(square.Coordinate.Item1, square.Coordinate.Item2 - 1));
+            Targets.Push(new BoardSquare(square.Coordinate.Item1, square.Coordinate.Item2 + 1));
+            Targets.Push(new BoardSquare(square.Coordinate.Item1 - 1, square.Coordinate.Item2));
+            Targets.Push(new BoardSquare(square.Coordinate.Item1 + 1, square.Coordinate.Item2));
+        }
 
         public void TakeShipInput()
         {
+            Targets = new Stack<BoardSquare>();
             Board = new GameBoard();
             Random r = new Random();
             int height = r.Next(1, Board.HEIGHT);
@@ -27,6 +36,20 @@ namespace Task4_Battleships.GameElements.Utilities
         }
 
         public void TakeStrikeInput()
+        {
+            
+            if (Targets.Any())
+            {
+                BoardSquare strikeTarget = Targets.Pop();
+                StrikeCoordinates = new Tuple<int, int>(strikeTarget.Coordinate.Item1, strikeTarget.Coordinate.Item2);
+            }
+            else
+            {
+                Hunt();
+            }
+        }
+
+        private void Hunt()
         {
             Random r = new Random();
             int height = r.Next(1, Board.HEIGHT);
