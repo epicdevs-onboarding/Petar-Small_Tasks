@@ -16,12 +16,22 @@ namespace Task4_Battleships.GameElements.Utilities
         public Stack<BoardSquare> Targets { get; set; }
         private GameBoard Board { get; set; }
 
-        public void AddTargets(BoardSquare square)
+        public void AddTargets(BoardSquare square, GameBoard opponentBoard)
         {
-            Targets.Push(new BoardSquare(square.Coordinate.Item1, square.Coordinate.Item2 - 1));
-            Targets.Push(new BoardSquare(square.Coordinate.Item1, square.Coordinate.Item2 + 1));
-            Targets.Push(new BoardSquare(square.Coordinate.Item1 - 1, square.Coordinate.Item2));
-            Targets.Push(new BoardSquare(square.Coordinate.Item1 + 1, square.Coordinate.Item2));
+            foreach (BoardSquare sq in opponentBoard.DefendingSide)
+            {
+                if (!sq.IsStriked && (sq.Coordinate.Item1 == square.Coordinate.Item1
+                                  && sq.Coordinate.Item2 == square.Coordinate.Item2 - 1)
+                                  || (sq.Coordinate.Item1 == square.Coordinate.Item1
+                                  && sq.Coordinate.Item2 == square.Coordinate.Item2 + 1)
+                                  || (sq.Coordinate.Item1 - 1 == square.Coordinate.Item1
+                                  && sq.Coordinate.Item2 == square.Coordinate.Item2)
+                                  || (sq.Coordinate.Item1 + 1 == square.Coordinate.Item1
+                                  && sq.Coordinate.Item2 == square.Coordinate.Item2))
+                {
+                    Targets.Push(sq);
+                }
+            }
         }
 
         public void TakeShipInput()

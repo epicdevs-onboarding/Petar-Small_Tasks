@@ -19,7 +19,7 @@ namespace Task4_Battleships.GameElements.Utilities
         public bool IsVertical { get; set; }
         public Stack<BoardSquare> Targets { get; set; }
 
-        public void AddTargets(BoardSquare square)
+        public void AddTargets(BoardSquare square, GameBoard opponentBoard)
         {
             throw new NotImplementedException();
         }

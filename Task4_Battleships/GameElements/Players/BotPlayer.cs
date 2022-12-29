@@ -89,7 +89,7 @@ namespace Task4_Battleships.GameElements.Players
                                 squareAtk.IsShip = true;
                                 squareAtk.Icon = squareAtk.HIT_CHAR;
                                 isHit = true;
-                                InputUtility.AddTargets(square);
+                                InputUtility.AddTargets(square, opponent.Board);
                                 Board.PrintWholeBoard();
                             }
                         }

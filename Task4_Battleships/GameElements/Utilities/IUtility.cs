@@ -16,6 +16,6 @@ namespace Task4_Battleships.GameElements.Utilities
 
         void TakeShipInput();
         void TakeStrikeInput();
-        void AddTargets(BoardSquare square);
+        void AddTargets(BoardSquare square, GameBoard opponentBoard);
     }
 }
