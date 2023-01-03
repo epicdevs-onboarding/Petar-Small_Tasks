@@ -1,43 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
+using System.ComponentModel;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using Task4_Battleships.Boards;
 using Task4_Battleships.Exceptions;
+using Task4_Battleships.GameElements.Utilities;
 using Task4_Battleships.Ships;
 
-namespace Task4_Battleships.GameElements
+namespace Task4_Battleships.GameElements.Players
 {
-    internal class Player
+    internal class HumanPlayer : Player, IPlayer
     {
-        public string Name { get; set; }
-        public List<Ship> StartingShips { get; set; }
-        public List<Ship> AvailableShips { get; set; }
-        public GameBoard Board { get; set; }
-        public InputUtility InputUtility { get; set; }
-
-        public Player(string name)
+        public HumanPlayer(string name) : base(name)
         {
-            Name = name;
-            StartingShips = new List<Ship>
-            {
-                new Carrier(),
-                new Battleship(),
-                new Submarine(),
-                new Cruiser(),
-                new Destroyer()
-            };
-            Board = new GameBoard();
-            AvailableShips = new List<Ship>();
             InputUtility = new InputUtility();
         }
 
-        public bool HasLost()
+        public void PlaceSingleShip(Ship ship, Tuple<int, int> coordinates, bool isVertical)
         {
-            return AvailableShips.Count == 0;
+            if (IsOverlappingShips(ship, coordinates, isVertical))
+                throw new InvalidShipPlacementException("The ship ovelaps another one! Mind the ship length when placing!");
+            else if (IsOutOfBounds(ship, coordinates, isVertical))
+                throw new InvalidShipPlacementException("The ship is outside of the field! Mind the ship length when placing!");
+
+            foreach (BoardSquare sq in Board.DefendingSide)
+            {
+                if ((!isVertical && ((sq.Coordinate.Item2 == coordinates.Item2)
+                                 && (sq.Coordinate.Item1 >= coordinates.Item1
+                                 && sq.Coordinate.Item1 < coordinates.Item1 + ship.Length)))
+                  || (isVertical && ((sq.Coordinate.Item1 == coordinates.Item1)
+                                 && (sq.Coordinate.Item2 >= coordinates.Item2
+                                 && sq.Coordinate.Item2 < coordinates.Item2 + ship.Length))))
+                {
+                    sq.IsEmpty = false;
+                    sq.IsShip = true;
+                    sq.Icon = Convert.ToChar(ship.BoardLetter);
+                }
+            }
+            Board.PrintWholeBoard();
         }
 
         public void PlacingShipsPhase()
@@ -53,10 +55,10 @@ namespace Task4_Battleships.GameElements
                         Console.WriteLine($"Placing the {ship.Name} which is {ship.Length} squares long...");
                         Console.ForegroundColor = ConsoleColor.White;
                         InputUtility.TakeShipInput();
-                        
+
                         PlaceSingleShip(ship, InputUtility.ShipCoordinates, InputUtility.IsVertical);
                         AvailableShips.Add(ship);
-                        hasException= true;
+                        hasException = true;
                     }
                     catch (Exception e)
                     {
@@ -68,7 +70,7 @@ namespace Task4_Battleships.GameElements
             Console.ReadKey();
         }
 
-        public void Strike(Player opponent)
+        public void Strike(IPlayer opponent)
         {
             bool isHit = false;
             bool isMiss = true;
@@ -76,7 +78,7 @@ namespace Task4_Battleships.GameElements
             InputUtility.TakeStrikeInput();
             foreach (BoardSquare square in opponent.Board.DefendingSide)
             {
-                if (square.Coordinate.Equals(Tuple.Create(InputUtility.StrikeCoordinates.Item2, InputUtility.StrikeCoordinates.Item1)))
+                if (square.Coordinate.Equals(Tuple.Create(InputUtility.StrikeCoordinates.Item1, InputUtility.StrikeCoordinates.Item2)))
                 {
                     if (square.IsShip)
                     {
@@ -129,63 +131,6 @@ namespace Task4_Battleships.GameElements
                 Console.ForegroundColor = ConsoleColor.White;
             }
             Console.ReadKey();
-        }
-
-        public void PlaceSingleShip(Ship ship, Tuple<int, int> coordinates, bool isVertical)
-        {
-            if (IsOverlappingShips(ship, coordinates, isVertical))
-                throw new InvalidShipPlacementException("The ship ovelaps another one! Mind the ship length when placing!");
-            else if (IsOutOfBounds(ship, coordinates, isVertical))
-                throw new InvalidShipPlacementException("The ship is outside of the field! Mind the ship length when placing!");
-
-            foreach (BoardSquare sq in Board.DefendingSide)
-            {
-                if ((!isVertical && ((sq.Coordinate.Item2 == coordinates.Item2)
-                                 && (sq.Coordinate.Item1 >= coordinates.Item1
-                                 && sq.Coordinate.Item1 < coordinates.Item1 + ship.Length))) 
-                  || (isVertical && ((sq.Coordinate.Item1 == coordinates.Item1)
-                                 && (sq.Coordinate.Item2 >= coordinates.Item2
-                                 && sq.Coordinate.Item2 < coordinates.Item2 + ship.Length))))
-                {
-                    sq.IsEmpty = false;
-                    sq.IsShip = true;
-                    sq.Icon = Convert.ToChar(ship.BoardLetter);
-                }
-            }
-            Board.PrintWholeBoard();
-        }
-
-        private bool IsOverlappingShips(Ship ship, Tuple<int, int> coordinates, bool isVertical)
-        {
-            bool hasOverlap = false;
-            foreach (BoardSquare sq in Board.DefendingSide)
-            {
-                if (!isVertical && sq.IsShip 
-                                && ((sq.Coordinate.Item2 == coordinates.Item2)
-                                && (sq.Coordinate.Item1 >= coordinates.Item1
-                                && sq.Coordinate.Item1 < coordinates.Item1 + ship.Length))) // horizontal
-                {
-                    hasOverlap = true;
-                }
-                else if (isVertical && sq.IsShip 
-                                    && ((sq.Coordinate.Item1 == coordinates.Item1)
-                                    && (sq.Coordinate.Item2 >= coordinates.Item2
-                                    && sq.Coordinate.Item2 < coordinates.Item2 + ship.Length))) // vertical
-                {
-                    hasOverlap = true;
-                }
-            }
-            return hasOverlap;
-        }
-
-        private bool IsOutOfBounds(Ship ship, Tuple<int, int> coordinates, bool isVertical)
-        {
-            if (isVertical && coordinates.Item2 + ship.Length > Board.HEIGHT + 1)
-                return true;
-            else if (!isVertical && coordinates.Item1 + ship.Length > Board.WIDTH + 1)
-                return true;
-            
-            return false;
         }
     }
 }

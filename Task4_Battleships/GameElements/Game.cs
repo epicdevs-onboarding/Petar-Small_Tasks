@@ -5,6 +5,8 @@ using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 using Task4_Battleships.Exceptions;
+using Task4_Battleships.GameElements.Players;
+using Task4_Battleships.GameElements.Utilities;
 
 namespace Task4_Battleships.GameElements
 {
@@ -13,26 +15,16 @@ namespace Task4_Battleships.GameElements
         private const string DEAULT_BOT_NAME = "Computer";
 
         public bool HaveBot { get; set; }
-        public Player Player1 { get; set; }
-        public Player Player2 { get; set; }
-        public Player CurrentPlayer { get; set; }
-        public Player NextPlayer { get; set; }
+        public IPlayer Player1 { get; set; }
+        public IPlayer Player2 { get; set; }
+        public IPlayer CurrentPlayer { get; set; }
+        public IPlayer NextPlayer { get; set; }
         public Log Log { get; set; }
         public int NumberOfTurns { get; set; }
         public ExceptionHandler ExceptionHandler { get; set; }
 
         public Game()
         {
-            Log = new Log();
-            NumberOfTurns = -1;
-            HaveBot = false;
-            ExceptionHandler = new ExceptionHandler();
-        }
-
-        public Game(string name1, string name2) //Player vs. Player
-        { 
-            Player1 = new HumanPlayer(name1);
-            Player2 = new HumanPlayer(name2);
             Log = new Log();
             NumberOfTurns = -1;
             HaveBot = false;
@@ -99,7 +91,7 @@ namespace Task4_Battleships.GameElements
         public void DecideStartingPlayer()
         {
             Random r = new Random();
-            List<Player> list = new List<Player> { Player1, Player2};
+            List<IPlayer> list = new List<IPlayer> { Player1, Player2};
             CurrentPlayer = list[r.Next(0, 2)];
 
             if (CurrentPlayer.Equals(Player1))
@@ -114,7 +106,7 @@ namespace Task4_Battleships.GameElements
 
         public void PassTurn()
         {
-            Player temp = CurrentPlayer;
+            IPlayer temp = CurrentPlayer;
             CurrentPlayer = NextPlayer;
             NextPlayer = temp;
             Console.Clear();
@@ -141,14 +133,8 @@ namespace Task4_Battleships.GameElements
             switch (mode)
             {
                 case 1 : GamemodeOnlyHuman(); break;
-                case 2 :
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Sorry, this gamemode is not supported yet!");
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Start();
-                        break;
-                    }
+                case 2 : GamemodeHumanVsComputer(); break;
+                default: Start(); break;
             }
             Console.WriteLine("The game will decide automaticaly who will start first...");
             DecideStartingPlayer();
@@ -160,8 +146,16 @@ namespace Task4_Battleships.GameElements
             string firstPlayerName = Console.ReadLine();
             Console.Write("Enter the second player's name: ");
             string secondPlayerName = Console.ReadLine();
-            Player1 = new Player(firstPlayerName);
-            Player2 = new Player(secondPlayerName);
+            Player1 = new HumanPlayer(firstPlayerName);
+            Player2 = new HumanPlayer(secondPlayerName);
+        }
+
+        public void GamemodeHumanVsComputer()
+        {
+            Console.Write("Enter player's name: ");
+            string playerName = Console.ReadLine();
+            Player1 = new HumanPlayer(playerName);
+            Player2 = new BotPlayer(DEAULT_BOT_NAME);
         }
     }
 }

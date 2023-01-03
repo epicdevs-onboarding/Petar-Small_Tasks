@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Task4_Battleships.GameElements.Players;
 
 namespace Task4_Battleships.GameElements
 {
@@ -16,7 +17,7 @@ namespace Task4_Battleships.GameElements
         public bool IsHit { get; set; }
         public Stopwatch Stopwatch { get; set; }
 
-        public Turn(Player player)
+        public Turn(IPlayer player)
         {
             PlayerName = player.Name;
             Stopwatch = Stopwatch.StartNew();
