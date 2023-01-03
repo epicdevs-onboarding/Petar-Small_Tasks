@@ -14,9 +14,11 @@ namespace Task4_Battleships.GameElements.Players
         string Name { get; set; }
         List<Ship> AvailableShips { get; set; }
 
-        public void PlacingShipsPhase();
-        public void PlaceSingleShip(Ship ship, Tuple<int, int> coordinates, bool isVertical);
-        public void Strike(IPlayer player);
+        void PlacingShipsPhase();
+        void PlaceSingleShip(Ship ship, Tuple<int, int> coordinates, bool isVertical);
+        void Strike(IPlayer player);
+        void PrintTransitionScreen(IPlayer opponent);
+        void Wait();
 
         bool HasLost()
         {

@@ -13,6 +13,8 @@ namespace Task4_Battleships.GameElements
     internal class Game
     {
         private const string DEAULT_BOT_NAME = "Computer";
+        private const int PLAYER_VS_PLAYER_IDX = 1;
+        private const int PLAYER_VS_AI_IDX = 2;
 
         public bool HaveBot { get; set; }
         public IPlayer Player1 { get; set; }
@@ -37,7 +39,7 @@ namespace Task4_Battleships.GameElements
             if (NumberOfTurns < 1)
             {
                 CurrentPlayer.PlacingShipsPhase();
-                PrintTransitionScreen();
+                CurrentPlayer.PrintTransitionScreen(NextPlayer);
                 NumberOfTurns++;
                 PassTurn();
             }
@@ -45,6 +47,7 @@ namespace Task4_Battleships.GameElements
             {
                 Turn turn = new Turn(CurrentPlayer);
                 CurrentPlayer.Strike(NextPlayer);
+                CurrentPlayer.Wait();
                 turn.End();
                 NumberOfTurns++;
                 Log.Add(turn);
@@ -53,18 +56,12 @@ namespace Task4_Battleships.GameElements
                     PrintFinalScreen();
                 else
                 {
+                    
+                    CurrentPlayer.PrintTransitionScreen(NextPlayer);
+                    NextPlayer.Wait();
                     PassTurn();
-                    PrintTransitionScreen();
                 }
             }
-        }
-
-        public void PrintTransitionScreen()
-        {
-            Console.Clear();
-            Console.WriteLine($"******************** {CurrentPlayer.Name} please let {NextPlayer.Name} conduct his turn! ******************** \n");
-            Console.WriteLine($"{NextPlayer.Name}, press a key to begin!");
-            Console.ReadKey();
         }
 
         public void PrintFinalScreen()
@@ -121,14 +118,14 @@ namespace Task4_Battleships.GameElements
                 Console.WriteLine("*************************   Welcome to Battleships!   *************************");
                 Console.WriteLine("Please choose gamemode:");
                 Console.WriteLine("-----------------------");
-                Console.WriteLine("(1) Player vs. Player");
-                Console.WriteLine("(2) Player vs. AI");
+                Console.WriteLine($"({PLAYER_VS_PLAYER_IDX}) Player vs. Player");
+                Console.WriteLine($"({PLAYER_VS_AI_IDX}) Player vs. AI");
                 input = Console.ReadLine();
-                if (!int.TryParse(input.Trim(), out mode) && (mode != 1 || mode != 2))
+                if (!int.TryParse(input.Trim(), out mode) && (mode != PLAYER_VS_PLAYER_IDX || mode != PLAYER_VS_AI_IDX))
                 {
                     Console.WriteLine("Invalid input! Pleace enter a valid mode!");
                 }
-            } while (!int.TryParse(input.Trim(), out mode) && (mode != 1 || mode != 2));
+            } while (!int.TryParse(input.Trim(), out mode) && (mode != PLAYER_VS_PLAYER_IDX || mode != PLAYER_VS_AI_IDX));
             
             switch (mode)
             {
