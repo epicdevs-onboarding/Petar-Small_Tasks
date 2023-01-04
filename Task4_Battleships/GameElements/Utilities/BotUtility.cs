@@ -8,7 +8,7 @@ using Task4_Battleships.Boards;
 
 namespace Task4_Battleships.GameElements.Utilities
 {
-    internal class BotUtility : GenericUtility, IUtility
+    internal class BotUtility : IUtility
     {
         public Tuple<int, int> ShipCoordinates { get; set; }
         public Tuple<int, int> StrikeCoordinates { get; set; }

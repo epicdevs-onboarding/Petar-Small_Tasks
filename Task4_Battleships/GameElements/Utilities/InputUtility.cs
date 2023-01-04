@@ -9,7 +9,7 @@ using Task4_Battleships.Exceptions;
 
 namespace Task4_Battleships.GameElements.Utilities
 {
-    internal class InputUtility : GenericUtility, IUtility
+    internal class InputUtility : IUtility
     {
         private const string KEYWORD_HORIZONTAL = "hor";
         private const string KEYWORD_VERTICAL = "ver";
@@ -21,7 +21,7 @@ namespace Task4_Battleships.GameElements.Utilities
 
         public void AddTargets(BoardSquare square, GameBoard opponentBoard)
         {
-            throw new NotImplementedException();
+            return;
         }
 
         public void TakeShipInput()
