@@ -11,6 +11,8 @@ namespace Task4_Battleships.Boards
     {
         public readonly char HIT_CHAR = 'x';
         public readonly char MISS_CHAR = '-';
+        public readonly char DEFAULT_CHAR = 'o';
+
         public Tuple<int, int> Coordinate { get; set; }
         public char Icon { get; set; }
         public bool IsShip { get; set; }

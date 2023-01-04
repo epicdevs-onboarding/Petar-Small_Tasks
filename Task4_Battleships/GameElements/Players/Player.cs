@@ -69,16 +69,40 @@ namespace Task4_Battleships.GameElements
             return false;
         }
 
+        protected bool IsAlreadyStruck(IPlayer opponent, Tuple<int, int> coordinates)
+        {
+            bool isAlreadyStruck = false;
+            foreach (BoardSquare sq in Board.AttackingSide)
+            {
+                if (sq.IsStriked && sq.Coordinate.Item1 == coordinates.Item1
+                                 && sq.Coordinate.Item2 == coordinates.Item2)
+                {
+                    isAlreadyStruck = true;
+                }
+            }
+            return isAlreadyStruck;
+        }
+
         public void Strike(IPlayer opponent)
         {
             bool isHit = false;
             bool isMiss = true;
             bool isSink = false;
             InputUtility.TakeStrikeInput();
+
+            foreach (BoardSquare sq in Board.AttackingSide)
+            {
+                if (sq.Icon != sq.DEFAULT_CHAR && sq.Coordinate.Equals(Tuple.Create(InputUtility.StrikeCoordinates.Item1, InputUtility.StrikeCoordinates.Item2)))
+                {
+                    throw new InvalidCoordinatesException("Make another try!");
+                }
+            }
+            
             foreach (BoardSquare square in opponent.Board.DefendingSide)
             {
                 if (square.Coordinate.Equals(Tuple.Create(InputUtility.StrikeCoordinates.Item1, InputUtility.StrikeCoordinates.Item2)))
                 {
+                    
                     if (square.IsShip)
                     {
                         foreach (BoardSquare squareAtk in Board.AttackingSide)
@@ -112,6 +136,8 @@ namespace Task4_Battleships.GameElements
                     square.IsStriked = true;
                 }
             }
+            
+
             isSink = opponent.AvailableShips.Any(s => s.IsSunk);
             opponent.AvailableShips.RemoveAll(s => s.IsSunk);
             if (isHit)
