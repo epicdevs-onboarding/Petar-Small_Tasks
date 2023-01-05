@@ -12,7 +12,6 @@ namespace Task4_Battleships.Exceptions
         {
             Console.WriteLine(e.Message);
             Console.WriteLine("Please try again!");
-            Console.ReadKey();
         }
     }
 }
